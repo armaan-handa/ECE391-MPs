@@ -1,0 +1,88 @@
+Implementing GDT/IDT
+	system maintaining infinite looping dispite initalizations
+		fixed by using the right pointers and creating several entires in kernel.c to start the IDT and contiuing the listing in exception.c	
+
+implementing paging
+	code jumping to random location in kernel.c
+		fixed by staticly declaring the directiry and paging tables
+	paging jumping to seemingly random code chunks outside of kernel	
+		fixed by combining all inline asm code to prevent conflicts in how things are passed
+		
+Issute getting RTC initialized
+	RTC interrupt ticks exactly once, and will not tick again. 
+		Fixed by making a temporary RTC handler for cp1 and having that throw out the contents RTC register C then it ticks again. 
+
+No interrupts getting recieved
+	Fix: enable and disable irq were doing the opposite, as the bit mask was wrong. 
+	
+General protection exception when recieving multiple interrupts
+	Fix: IDT size set to 0 instead of 1. having it at 1 was creating a backlog, whereas having it at 0 allows interrupts to keep coming in. 
+
+=====================================================================================================================================================================================
+
+File system page faulted on data read
+	Fix: Forgot to initialize variable storing address, so program tried to deref NULL
+
+File system failed to write some bytes (this is like 5 bugs in one)
+	Fix: Logic in reading loop was misaligned from blocks
+
+File system didn't find the correct file
+	Fix: Used strncmp() incorrectly and fixed a == = mixup
+
+Backspace went up two lines when backspacing multiline statement
+	Fix: Was printing new line character instead of incrementing screen_y when reaching 80 characters
+
+Scrolling moved everything up by half a line. 
+	Fix: multiply size by 2 for attribute byte when copying video memory
+
+Cursor moved double the amount but characters were being printed in correct place
+	Fix: Calculation error when calculation position to feed into VGA registers.
+======================================================================================================================================================================================
+
+Page fault on halt
+	source of page fault isolated to halt command
+	Fix: In the linkage we decramented the function count, and never undectramented on the halt
+
+Miss spelled terminal typing
+	Fix: Buffer not clearing correctly, added addtional logic to ensure a clear buffer 
+
+PingPong/ls page faulting
+	Fix: PCB Set up in filesystem was not constructed properlt and several elements were not updating
+
+Exit from shell page faulting
+	Fix:Additional assembly code required. Halt was only tearing down functions to shell, leaving shell was not configured.
+	
+======================================================================================================================================================================================
+
+Page fault on vidmap
+	Fix: Allow user mode bit on page table
+	
+Arguments were overwriting and not behaving correctly
+	Fix: Changed argument parsing to be a single string, added NULL terminator
+	
+grep was failing on read
+	Fix: Removed a variable that no longer needed to exist on fdir_read that was being filled with junk
+
+
+=====================================================================================================================================================================================
+
+Virtualizing RTC in rtc_read not rtc_handler
+	Fix: Do the decrementing in the RTC handler so it chenges each PCB's values at the same time instead of one at a time
+
+Vidmap was incorrect
+	Fix: We had to set up paging correctly.
+
+Undefinted behavior on switching terminals
+Errors upon switching to the third terminal
+Page faults upon halting ls
+pcb->terminal got overwritten with random data
+Literally everything but fish and pingpong
+Hello on multiple terminals would output "hello, hello"
+	Fix: We needed seperate enter flags for each terminal to terminal_read(); (fixed all of the above. thanks Benny <3)
+
+cursor got locked to bottom left corner when pinpong ran in background
+	Fix: Seperate cursor for each terminal.
+
+
+
+

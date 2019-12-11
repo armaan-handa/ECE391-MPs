@@ -1,0 +1,28 @@
+boot.o: boot.S multiboot.h x86_desc.h types.h
+linkage.o: linkage.S
+syscall_linkage.o: syscall_linkage.S
+x86_desc.o: x86_desc.S x86_desc.h types.h
+exception.o: exception.c lib.h types.h x86_desc.h exception.h syscall.h \
+  paging.h
+filesys.o: filesys.c filesys.h multiboot.h types.h lib.h terminal.h rtc.h \
+  pcb.h
+i8259.o: i8259.c i8259.h types.h lib.h
+kernel.o: kernel.c multiboot.h types.h x86_desc.h lib.h i8259.h debug.h \
+  tests.h keyboard.h exception.h rtc.h paging.h linkage.h filesys.h \
+  syscall_linkage.h syscall.h scheduling.h
+keyboard.o: keyboard.c keyboard.h types.h i8259.h x86_desc.h lib.h \
+  terminal.h syscall.h paging.h pcb.h filesys.h multiboot.h
+lib.o: lib.c lib.h types.h syscall.h paging.h
+paging.o: paging.c paging.h types.h lib.h syscall.h
+parsing.o: parsing.c parsing.h types.h pcb.h filesys.h multiboot.h
+pcb.o: pcb.c pcb.h types.h filesys.h multiboot.h terminal.h
+rtc.o: rtc.c rtc.h types.h i8259.h x86_desc.h lib.h filesys.h multiboot.h \
+  syscall.h paging.h scheduling.h pcb.h
+scheduling.o: scheduling.c types.h scheduling.h pcb.h filesys.h \
+  multiboot.h paging.h x86_desc.h rtc.h lib.h i8259.h syscall.h
+syscall.o: syscall.c syscall.h types.h paging.h lib.h x86_desc.h \
+  parsing.h pcb.h filesys.h multiboot.h keyboard.h i8259.h scheduling.h
+terminal.o: terminal.c terminal.h types.h lib.h i8259.h x86_desc.h \
+  keyboard.h pcb.h filesys.h multiboot.h
+tests.o: tests.c tests.h x86_desc.h types.h lib.h i8259.h keyboard.h \
+  paging.h filesys.h multiboot.h rtc.h terminal.h

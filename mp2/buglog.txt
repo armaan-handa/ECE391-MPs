@@ -1,0 +1,25 @@
+Issue: Left side of screen appeared when pressing left side of screen; caused by draw_vert_line; fix: used show_y in stead of x and vic versa when calling vert_line_fn
+
+Issue: Status bar appears at the top and flickers; fix: forgot to change register values for MODEX_CRTC and MODEX_ATTR
+
+Issue: Status bar shows incorrect letters for current room, and status message; fix: forgot to convert game_info.where to room name when calling draw_status_bar
+
+Issue: Status bar covers bottom part of image; fix: change IMAGE_Y_DIM to 182 from 200 to account for 18 pixels of status bar.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|                             CHECKPOINT 2                                                                                                                                  |                         
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Issue: Most pixels are green; Fix: convert from 5:6:5 RGB to 6:6:6 RGB before setting palette
+
+Issue: Colors are wrong, image is bareley recognizable; Fix: offset palette indices by 64
+
+Issue: Weird horizontal lines and bottom half unrecognizable; Fix: indexing issue, multiplied height instead of width when row major order indexing
+
+Issue: Some pixels the wrong color; Fix: wront bit shifting amount when calculating level 2 nodes
+
+Issue: LEDs show wrong text through input.c; Fix: shifted bits wrong amount in driver
+
+Issue: buttons make screen flash but dont do anything; Fix: fixed get_tux_command switch case to use active low bits
+
+Issue: Time shows in hexadecimal; Fix: implemented algorithm to convert time to show correctly
